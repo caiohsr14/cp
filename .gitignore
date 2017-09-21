@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.pdf
+
+uva/t\.py
+
+uri/F/
+
+uri/K/
+
+uri/t\.py
