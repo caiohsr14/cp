@@ -1,23 +1,27 @@
 #TLE
 from sys import stdin, stdout
+t = [[0, -1], [0, 1], [1, 0], [-1, 0]]
+y = [1, 2, 0]
+p = {'S': 0, 'R': 1, 'P': 2}
+e = ['S', 'R', 'P']
+
 def main():
-	t = [[0, -1], [0, 1], [1, 0], [-1, 0]]
 	for i in range(int(stdin.readline())):
 		if i > 0:
 			stdout.write("\n")
-		a, b, c = stdin.readline().split()
-		a = int(a)
-		b = int(b)
-		c = int(c)
-		z = [f[:] for f in [[0] * 102] * 102]
+		a, b, c = [int(x) for x in stdin.readline().strip().split()]
+		z = [None, None]
+		z[0] = [f[:] for f in [[None] * 102] * 102]
+		z[1] = [f[:] for f in [[None] * 102] * 102]
 		for j in range(a):
 			k = 0
-			for l in list(stdin.readline()):
-				z[j][k] = l
+			for l in list(stdin.readline().strip()):
+				z[0][j][k] = p[l]
 				k += 1
-		x = [f[:] for f in z]
+		q = 0
+		o = True
 		for j in range(c):
-			o = True
+			q = j + 1
 			for k in range(a):
 				for m in range(b):
 					for v in range(4):
@@ -25,23 +29,20 @@ def main():
 						h = m + t[v][1]
 						if (g < 0 or g >= a or h < 0 or h >= b):
 							continue
-						if(x[g][h] == 'S' and x[k][m] == 'P'):
-							z[k][m] = 'S'
-							o = False
-						elif(x[g][h] == 'P' and x[k][m] == 'R'):
-							z[k][m] = 'P'
-							o = False
-						elif(x[g][h] == 'R' and x[k][m] == 'S'):
-							z[k][m] = 'R'
-							o = False
-			if o:
-				break
-			x = [f[:] for f in z]
+						o = False
+						az = z[j&1][g][h]
+						aw = z[j&1][k][m]
+						if az == y[aw]:
+							z[(j+1)&1][k][m] = az
+							break
+						else:
+							z[(j+1)&1][k][m] = aw
+		q = 0 if o else q
 		for j in range(a):
-			s = []
+			s = ""
 			for k in range(b):
-				s.append(z[j][k])
-			stdout.write("".join(s) + "\n")
+				s += e[z[q&1][j][k]]
+			stdout.write(s + "\n")
 
 if __name__ == "__main__":
 	main()
